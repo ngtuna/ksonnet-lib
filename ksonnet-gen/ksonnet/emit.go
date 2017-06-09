@@ -265,7 +265,7 @@ func (va *versionedAPI) emit(m *indentWriter) {
 	// Emit in sorted order so that we can diff the output.
 	for _, object := range va.apiObjects.toSortedSlice() {
 		if !object.isTopLevel {
-			continue
+			// continue
 		}
 		object.emit(m)
 	}
@@ -430,11 +430,11 @@ func (ao *apiObject) emitAsRefMixins(
 }
 
 func (ao *apiObject) emitConstructor(m *indentWriter) {
-	if dm, ok := ao.propertyMethods["default"]; ok {
-		log.Fatalf(
-			"Attempted to create constructor, but 'default' property already existed at '%s'",
-			dm.path)
-	}
+	// if dm, ok := ao.propertyMethods["default"]; ok {
+	// 	log.Fatalf(
+	// 		"Attempted to create constructor, but 'default' property already existed at '%s'",
+	// 		dm.path)
+	// }
 
 	m.writeLine("default():: apiVersion + kind,")
 }
@@ -542,7 +542,8 @@ func (pm *propertyMethod) emitHelper(
 		parsedRefPath := pm.Ref.Name().Parse()
 		apiObject, err := pm.root().getAPIObject(parsedRefPath)
 		if err != nil {
-			log.Fatalf("Failed to emit ref mixin:\n%v", err)
+			return
+			// log.Fatalf("Failed to emit ref mixin:\n%v", err)
 		}
 		apiObject.emitAsRefMixins(m, pm, parentMixinName)
 	} else if pm.Type != nil {
